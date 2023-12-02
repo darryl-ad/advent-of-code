@@ -1,3 +1,4 @@
+# BOILERPLATE
 import os
 import time
 
@@ -9,8 +10,10 @@ else:
 start = time.perf_counter()
 
 
+# IMPLEMENTATION
 
 
+# OUTPUT
 # end = time.perf_counter()
 # print(f"Solution = {sol}")
 # print(f"Time = {(end-start)*1000:.3f} ms")
