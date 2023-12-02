@@ -29,7 +29,8 @@ def check_possible(count, allowed):
         return True
 
 
-def solution(colours, allowed):
+def solution(data, colours, allowed):
+    data = data.replace(" ", "").splitlines()
     ID_sum = 0
     power_sum = 0
 
@@ -52,12 +53,12 @@ def solution(colours, allowed):
 
 
 with open(path) as f:
-    data = f.read().replace(" ", "").splitlines()
+    data = f.read()
 
 colours = ["red", "green", "blue"]
 allowed = [12, 13, 14]
 
-sol = solution(colours, allowed)
+sol = solution(data, colours, allowed)
 
 # OUTPUT
 end = time.perf_counter()
