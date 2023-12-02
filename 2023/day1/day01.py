@@ -43,11 +43,10 @@ def solution(path):
         data = f.read()
         
     map = get_ordered_map()
-    data_split = data.splitlines()
     sum1 = 0
     sum2 = 0
-    for i in range(len(data_split)):
-        line = data_split[i]
+    
+    for line in data.splitlines():
         digits1 = [s for s in list(line) if s.isdigit()]
         digits2 = [first_digit(line,map), last_digit(line,map)]
         
@@ -55,9 +54,11 @@ def solution(path):
         sum2 += int(digits2[0] + digits2[-1])
 
     return [sum1, sum2]
-    
+
+sol = solution(path)
 end = time.perf_counter()
-print(f"Solution = {solution(path)}")
+
+print(f"Solution = {sol}")
 print(f"Time = {(end-start)*1000:.4f} ms")
 
     
