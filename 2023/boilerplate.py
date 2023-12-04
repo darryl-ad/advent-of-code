@@ -11,7 +11,14 @@ start = time.perf_counter()
 
 
 # IMPLEMENTATION
+with open(path) as f:
+    data = f.read().splitlines()
+    
+line = data[0]
 
+nums = line.split(':')[1].strip().split('|')
+
+print(nums)
 
 # OUTPUT
 # end = time.perf_counter()
