@@ -11,43 +11,73 @@ start = time.perf_counter()
 
 
 # IMPLEMENTATION
-import re
+def is_part(row, y1, y2, data):
+    y1 = max(0, y1-1)
+    y2 = min(len(data[0])-1, y2+1)
+    x1 = max(0, row-1)
+    x2 = min(len(data)-1, row+1)
+
+    is_part = False
+    for x in range(x1, x2+1):
+        for y in range(y1, y2+1):
+            if data[x][y].isdigit() or data[x][y] == ".":
+                continue
+            else:
+                is_part = True
+                break
+        
+        if is_part:
+            break
+    
+    return is_part
+
+def parse_for_nums(line):
+    nums = []
+    idxs = []
+    num = []
+    for i, c in enumerate(line):
+        if not c.isdigit():
+            if num:
+                nums.append(num)
+                idxs.append(idx)
+                num = None
+            continue
+        else:
+            if not num:
+                num = c
+                idx = i
+            else:
+                num +=c
+            
+            if i == len(line) - 1:
+                nums.append(num)
+                idxs.append(idx)
+            
+    return nums, idxs
+        
 
 with open(path) as f:
-    data = f.read()
+    data = f.read().splitlines()
 
-nums = []
-syms_y = []
-for row, line in enumerate(data.splitlines()):
-    these_nums = re.findall(r"\d+", line)
-    these_syms = re.findall(r"[^.\d]", line)
+parts = []
+part_sum = 0
+for i_row, line in enumerate(data):
 
-    for n in these_nums:
-        idx_n = line.index(n)
+    line = line.strip()
+    line_list = list(line)
+    these_nums, idxs = parse_for_nums(line)
 
-        nums.append({"val": int(n), "x": row, "y1": idx_n, "y2": idx_n + len(n) - 1})
+    for n, idx_n in zip(these_nums, idxs):
+    
+        if is_part(i_row, idx_n, idx_n + len(n) - 1 , data):
+            parts.append(int(n))
+            part_sum += int(n)
+            
 
-    this_y = [idx_s for idx_s, s in enumerate(line) if s in these_syms]
-  
-    syms_y.append(this_y)
 
-sum = 0
-for n in range(len(nums)):
-    num = nums[n]["val"]
-    row = nums[n]["x"]
-    y1 = nums[n]["y1"]
-    y2 = nums[n]["y2"]
+print(part_sum)
 
-    search_rows = range(max(0, row - 1), min(row + 1, len(syms_y)-1) + 1)
-    for r in search_rows:
-        if syms_y[r] is not None and any(
-            [(y1 - 1) <= y <= (y2 + 1) for y in syms_y[r]]
-        ):
-            sum += num
-            break
-
-print(sum)
-
+            
 # OUTPUT
 # end = time.perf_counter()
 # print(f"Solution = {sol}")
