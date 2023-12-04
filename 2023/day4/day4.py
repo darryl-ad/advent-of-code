@@ -21,7 +21,7 @@ def get_score(line):
     winning_count = len(common)
     score = 0
     if winning_count > 0:
-        score = 1 + (2 ** (winning_count - 1) - 1)
+        score = 2 ** (winning_count - 1) - 1
 
     return (score, winning_count)
 
