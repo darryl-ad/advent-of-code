@@ -28,26 +28,21 @@ def get_score(line):
 
 def solution(data):
     # Part 1
-    n = len(data)
-    scores = [0] * n
-    winning_count = [0] * n
-    card_count = [1] * n
+    sum1 = 0
+    card_count = [1] * len(data)
 
     for idx, line in enumerate(data):
-        scores[idx], winning_count[idx] = get_score(line)
+        score, n_w = get_score(line)
 
+        sum1 += score
         n_c = card_count[idx]
-        n_w = winning_count[idx]
 
         if n_w == 0:
             continue
 
-        n_assign = [n_c] * n_w  # Assign n_c cards to next n_w rows
+        for idx_w in range(n_w):
+            card_count[idx + idx_w + 1] += n_c
 
-        for idx_w, n_ass in enumerate(n_assign):
-            card_count[idx + idx_w + 1] += n_ass
-
-    sum1 = sum(scores)
     sum2 = sum(card_count)
 
     return sum1, sum2
