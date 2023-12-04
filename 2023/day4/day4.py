@@ -29,7 +29,6 @@ def get_score(line):
 def solution(data):
     # Part 1
     n = len(data)
-    sum1 = 0
     scores = [0] * n
     winning_count = [0] * n
     card_count = [1] * n
