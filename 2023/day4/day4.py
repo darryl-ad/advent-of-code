@@ -33,18 +33,18 @@ def solution(data):
     scores = [0] * n
     winning_count = [0] * n
     card_count = [1] * n
-    
+
     for idx, line in enumerate(data):
         scores[idx], winning_count[idx] = get_score(line)
-        
+
         n_c = card_count[idx]
         n_w = winning_count[idx]
-        
+
         if n_w == 0:
             continue
-        
+
         n_assign = [n_c] * n_w  # Assign n_c cards to next n_w rows
-        
+
         for idx_w, n_ass in enumerate(n_assign):
             card_count[idx + idx_w + 1] += n_ass
 
