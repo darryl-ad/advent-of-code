@@ -32,27 +32,23 @@ def solution(data):
     sum1 = 0
     scores = [0] * n
     winning_count = [0] * n
-    for idx_l, line in enumerate(data):
-        scores[idx_l], winning_count[idx_l] = get_score(line)
-
-    sum1 = sum(scores)
-
-    # Part 2
     card_count = [1] * n
-    for idx_c in range(n):
-        n_c = card_count[idx_c]
-        n_w = winning_count[idx_c]
-
+    
+    for idx, line in enumerate(data):
+        scores[idx], winning_count[idx] = get_score(line)
+        
+        n_c = card_count[idx]
+        n_w = winning_count[idx]
+        
         if n_w == 0:
             continue
-
+        
         n_assign = [n_c] * n_w  # Assign n_c cards to next n_w rows
-
-        # (Cards will never make you copy a card past the end of the table.) - Edge cases therefore removed
-
+        
         for idx_w, n_ass in enumerate(n_assign):
-            card_count[idx_c + idx_w + 1] += n_ass
+            card_count[idx + idx_w + 1] += n_ass
 
+    sum1 = sum(scores)
     sum2 = sum(card_count)
 
     return sum1, sum2
