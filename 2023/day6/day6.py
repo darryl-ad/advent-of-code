@@ -25,6 +25,7 @@ def calc_win_times(T, S):
     end = max([t1, t2])
 
     # Check if exact solution, to win the distanc must be greater
+    # Note the question assumes that there are always real solution(s)
     start = int(start + 1 if start % 1 == 0 else math.ceil(start))
     end = int(end - 1 if end % 1 == 0 else math.floor(end))
     t_list = list(range(start, end + 1))
