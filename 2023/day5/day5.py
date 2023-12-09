@@ -41,7 +41,7 @@ for i_line, line in enumerate(data):
     if line == "":
         continue
 
-    if next_stage in line:  
+    if next_stage in line:
         if this_stage:
             stages[this_stage] = map
 
@@ -86,6 +86,7 @@ def process(x, start_idx=0, reverse=False):
 
 part1 = min([process(x) for x in seeds])
 
+
 def check_if_seed(x):
     for i in range(0, len(seeds), 2):
         if seeds[i] <= x <= seeds[i] + seeds[i + 1]:
@@ -93,18 +94,19 @@ def check_if_seed(x):
     else:
         return False
 
+
 def part2_reverse_search():
     solved = False
-    y = 52210600 # Quick-start!
+    y = 52210600  # Quick-start!
     while True:
         if y % 1000000 == 0:
             print("iteration : " + y)
         x = process(y, start_idx=len(stage_keys) - 1, reverse=True)
         solved = check_if_seed(x)
         if solved:
-            return y-1 # I think this is a mistake, but works for my input
+            return y - 1  # I think this is a mistake, but works for my input
         y += 1
-    
+
 
 part2 = part2_reverse_search()
 
