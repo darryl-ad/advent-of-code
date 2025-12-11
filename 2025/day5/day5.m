@@ -47,14 +47,14 @@ for idx_range = 2:n_ranges
     overlapped_start = find(find_range_membership(id_start, consolidated_ranges(:,1), consolidated_ranges(:,2)));
 
     if isempty(overlapped_start)
-        % add a new range
+        % append a new range
         consolidated_ranges = [consolidated_ranges; [id_start, id_end]]; % Accept changing array size, ~1000 rows
 
     elseif length(overlapped_start) > 1
         error("id_start overlaps with more than 1 consolidated range")
 
     else
-        % Expand existing range?
+        % Expand existing range end point?
         if id_end <= consolidated_ranges(overlapped_start, 2)
             % Range is already covered. Move on
             continue
