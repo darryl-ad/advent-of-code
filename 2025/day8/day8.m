@@ -3,11 +3,8 @@ data = readlines( ...
     "EmptyLineRule", "skip"...
     );
 
-n_connect = 1000;
-
 coords = cell2mat(arrayfun(@(x) str2double(strsplit(x, ",")), data, 'UniformOutput', false));
-h = height(coords);
-IDs = transpose(1:h);
+IDs = transpose(1:height(coords));
 
 % Pre-calculate all pairwise distance combinations
 combs = nchoosek(IDs, 2);
@@ -23,13 +20,12 @@ end
 [distances, idx_sort] = sort(distances, 'ascend');
 combs = combs(idx_sort, :);
 
-% Connect first n
-idx_comb = 1;
+% Make connections
 cntr_connected = 0;
-circuits = {};
-while cntr_connected < n_connect
-    ID_1 = combs(idx_comb, 1);
-    ID_2 = combs(idx_comb, 2);
+circuits = num2cell(IDs);
+while numel(circuits) > 1
+    ID_1 = combs(cntr_connected + 1, 1);
+    ID_2 = combs(cntr_connected + 1, 2);
 
     coord_str_1 = mat2str(coords(ID_1, :));
     coord_str_2 = mat2str(coords(ID_2, :));
@@ -38,25 +34,10 @@ while cntr_connected < n_connect
 
     circuit_idx_1 = find_circuit_match(ID_1, circuits);
     circuit_idx_2 = find_circuit_match(ID_2, circuits);
-        
-    if isempty(circuit_idx_1) && isempty(circuit_idx_2)
-        % New circuit
-        circuits{end+1, 1} = [ID_1, ID_2];
-        fprintf("\n  New circuit!\n")
 
-    elseif circuit_idx_1 == circuit_idx_2
+    if circuit_idx_1 == circuit_idx_2
         % Already connected, skip combination
         fprintf("\n  Already connected!\n")
-
-    elseif isempty(circuit_idx_2)
-        % Add ID2 to circuit containing ID1
-        circuits{circuit_idx_1, 1} = [circuits{circuit_idx_1, 1}, ID_2];
-        fprintf("\n  Added to existing circuit %i!\n", circuit_idx_1)
-
-    elseif isempty(circuit_idx_1)
-        % Add ID1 to circuit containing ID2
-        circuits{circuit_idx_2, 1} = [circuits{circuit_idx_2, 1}, ID_1];
-        fprintf("\n  Added to existing circuit %i!\n", circuit_idx_2)
 
     else
         % Add circuit containing ID2 to circuit containing ID1, then delete
@@ -68,13 +49,16 @@ while cntr_connected < n_connect
     end
 
     cntr_connected = cntr_connected + 1;
-    idx_comb = idx_comb + 1;
+
+    if cntr_connected == 1000
+        [circuits, num_members] = sort_circuits(circuits);
+        part_1 = prod(num_members(1:3, :));
+    end
 
 end
 
-[circuits, num_members] = sort_circuits(circuits);
-
-fprintf("\nPART 1 = %i\n", prod(num_members(1:3, :)))
+fprintf("\nPART 1 = %i\n", part_1)
+fprintf("\nPART 2 = %i\n", coords(ID_1, 1) * coords(ID_2, 1))
 
 
 %% FUNCS
